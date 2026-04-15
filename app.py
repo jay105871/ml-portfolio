@@ -1,3 +1,6 @@
+from tensorflow import keras
+import numpy as np
+
 import streamlit as st
 import joblib
 import pandas as pd
@@ -7,7 +10,7 @@ st.title("Customer Analytics Dashboard")
 # Sidebar menu
 menu = st.sidebar.selectbox(
     "Select View",
-    ["Churn Prediction", "Customer Segmentation"]
+    ["Churn Prediction", "Customer Segmentation", "Recommendations"]
 )
 
 # ---------------- CHURN ----------------
@@ -46,3 +49,21 @@ if menu == "Customer Segmentation":
     st.write("0 = Low Value Customers")
     st.write("1 = Mid Value Customers")
     st.write("2 = High Value Customers")
+
+# ---------------- RECOMMENDER ----------------
+if menu == "Recommendations":
+    st.header("Product Recommendations")
+
+    model = keras.models.load_model("recommender_model.h5")
+
+    user_id = st.slider("Select User ID", 0, 100, 1)
+
+    items = np.arange(0, 50)
+    user_array = np.full(len(items), user_id)
+
+    predictions = model.predict([user_array, items])
+
+    top_items = items[np.argsort(predictions.flatten())[-5:]]
+
+    st.write("Top Recommended Items:")
+    st.write(top_items)
