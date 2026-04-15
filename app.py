@@ -1,8 +1,8 @@
+from tensorflow import keras
+import numpy as np
 import streamlit as st
 import joblib
 import pandas as pd
-from tensorflow import keras
-import numpy as np
 
 st.title("Customer Analytics Dashboard")
 
@@ -53,7 +53,7 @@ if menu == "Customer Segmentation":
 if menu == "Recommendations":
     st.header("Product Recommendations")
 
-    model = keras.models.load_model("recommender_model.h5")
+    model = keras.models.load_model("recommender_model.keras")
 
     user_id = st.slider("Select User ID", 0, 100, 1)
 
